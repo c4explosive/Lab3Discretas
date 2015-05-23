@@ -1,0 +1,31 @@
+/*el departamento de personal de un colegio tiene  registrado a sus docentes por nombre, sexo y edad
+edad promedio
+profe mas joven
+profe mas viejo
+profesoras mas viejas al promedio
+profesores con menor edad al promedio*/
+
+#include <stdio.h>
+#include <conio.h>
+struct death{
+	char nombre [15];
+	int edad;
+	char sexo;
+};
+void main(){
+	int i, j, acumed, prom;
+	float pro;
+	char c;
+	struct death hell[15];
+	clrscr();
+	printf("Calculo de la edad promedio.\n");
+	for(i=0; i<15; i++){
+		acumed+=hell[i].edad;
+	} prom=acumed/15;
+	printf("El promedio de edad es: %f", prom);
+	printf("Profesor de menor edad.\n");
+	printf("Profesor de mayor edad.\n");
+	printf("Profesoras de mayor edad al promedio.\n");
+	printf("Profesores de menor edad al promedio.\n");
+	getch();
+}
