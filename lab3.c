@@ -1,16 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+//#include <conio.h>
 #include <graphics.h>
 #define sst "H:\\BGI"
-#define TAM 10
+#define TAM 100
 typedef struct cj {
     int * X;
     int * Xc;
-} conj;
+} conj;  
 void graphic(int *, int *);
 void printj(conj * Y);
 conj * cconj(conj * Z);
-void pcar(int * cj1, int * cjc1, int * cj2, int * cjc2 );
+void pcar(conj * Y,conj * Z);
 void nrel();
 void matrel();
 conj * iconj();
@@ -20,8 +21,11 @@ void main()
     conj* A=iconj();
     conj* B=iconj();
     A=cconj(A);
-    printf("N: %d\n",A->X[0]);
-    //printj(A);
+    B=A;
+    //printf("N: %d\n",A->X[0]);
+    printj(A);
+    printj(B);
+    pcar(A,B);
     //graphic(&gd,&gm);
 }
 
@@ -39,7 +43,7 @@ void graphic(int * gd, int * gm)
         cont=getch();
         closegraph();
     } while(cont == 'y');
-    printf("DETECT: 0x%x\n",&gd);
+    //printf("DETECT: 0x%x\n",&gd);
 }
 
 void printj(conj * Y)
@@ -59,21 +63,41 @@ void printj(conj * Y)
     else
     	printf("\b}\n");
 }
-void pcar(int * cj1, int * cjc1, int * cj2, int * cjc2 )
+void pcar(conj * Y,conj * Z)
 {
     int i, j;
-    
+    printf("{");
+    for(i=0;i<TAM;i++)
+    {
+	
+	if(Y->Xc[i])
+	{
+	    //printf("%d\n",Y->X[i]);
+	    for(j=0;j<TAM;j++)
+	     {
+		if(Z->Xc[j])
+		{
+		    printf("(%d,%d),",Y->X[i],Z->X[j]);
+		}
+	     }
+	}
+    } 
+    printf("\b}\n");
 }
 conj * cconj(conj * Z)
 {
     int i;
-    for (i=0;i<16;i++)
+    for (i=0;i<TAM;i++)
     {
-	/*if(i%2==0)
-	{*/
-	    Z->X[i]=i+2;
+	if (i == 16)
+	    break;
+	if (i == 0)
+	    continue;
+	if(i%2==0)
+	{
+	    Z->X[i]=i;
 	    Z->Xc[i]=1;
-	//}
+	}
     }
     return Z;
 }
@@ -82,7 +106,6 @@ conj * iconj()
     conj * ccj=malloc(sizeof(conj));
     ccj->X=malloc(TAM*sizeof(int));
     ccj->Xc=malloc(TAM*sizeof(int));
-    *ccj->Xc=0;
     return ccj;
 }
 
