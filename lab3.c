@@ -2,13 +2,15 @@
 #include <stdlib.h>
 //#include <conio.h>
 #include <graphics.h>
+#include <string.h>
 #define sst "H:\\BGI"
 #define TAM 100
 typedef struct cj {
     int * X;
     int * Xc;
 } conj;  
-void graphic(int *, int *);
+void graphic(int *, int *,conj * A);
+char * itoa(int);
 void printj(conj * Y);
 conj * cconj(conj * Z);
 void pcar(conj * Y,conj * Z);
@@ -23,13 +25,13 @@ void main()
     A=cconj(A);
     B=A;
     //printf("N: %d\n",A->X[0]);
-    printj(A);
+    /*printj(A);
     printj(B);
-    pcar(A,B);
-    //graphic(&gd,&gm);
+    pcar(A,B);*/
+    graphic(&gd,&gm,A);
 }
 
-void graphic(int * gd, int * gm)
+void graphic(int *gd, int *gm,conj * A)
 {
     int left=100,top=100,right=200,bottom=200,x= 300,y=150,radius=50;
     int i;
@@ -38,12 +40,17 @@ void graphic(int * gd, int * gm)
     {
     	initgraph(gd,gm,sst);
     	setcolor(0x1);
-    	outtextxy(left + 2, top + 34, "C SDL");
-    	outtextxy(left + 2, top + 99, "Salir?");
+    	outtextxy(left + 2, top + 34, itoa(A->X[2]));
         cont=getch();
         closegraph();
     } while(cont == 'y');
     //printf("DETECT: 0x%x\n",&gd);
+}
+char * itoa(int x)
+{
+    char * buffer=malloc(sizeof(char));
+    sprintf(buffer,"%d",x);
+    return buffer;
 }
 
 void printj(conj * Y)
