@@ -136,7 +136,7 @@ void triangle(int xalpha, int yalpha,int mode)
     for(i=0;i<5;i++)
     {
     	moveto(xalpha+0,yalpha+0);
-    	linerel(i/0.577,i); //Para ángulo de 30º se divide entre 0.577 la pendiente.
+    	linerel(i/0.577,i); //Para ángulo de 30º se divide entre 0.577 para  la pendiente.
     	linerel(-i/0.577,i);
     	linerel(0,-i*2);
     }
