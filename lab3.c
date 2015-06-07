@@ -17,9 +17,10 @@ conj * cconj(conj * Z);
 int ** nrel(conj *,conj *,int);
 void matrel();
 void pcar(conj * Y,conj * Z);
+void menu();
 //////////F(x) Auxiliares/////////////////
 char * intostr(int);
-void triangle(int, int);
+void triangle(int, int, int);
 void pbiarray(int **, int k);
 conj * iconj();
 /////////////////////////////////////////
@@ -43,8 +44,8 @@ void graphic(int *gd, int *gm,conj * A,conj * B)
 {
     int left=100,top=100,right=200,bottom=200,x= 300,y=150,radius=50;
     int i,j,k=0,l=0,p1,p2;
-    int Xpos[2][7]={{23,45,67,90,178,152,255},
-		    {45,140,89,38,17,142,105}};
+    int Xpos[2][7]={{23,45,135,90,178,152,255},
+		    {45,140,97,38,17,142,105}};
     int** Pos=malloc(sizeof(int*));
     for(i=0;i<2;i++)
 	Pos[i]=malloc(7*sizeof(int));
@@ -100,7 +101,7 @@ void graphic(int *gd, int *gm,conj * A,conj * B)
 		else
 		    l=1;
     		setcolor(0xE);
-		triangle(left+Xpos[0][p2]-5,top+ Xpos[1][p2]);
+		triangle(left+Xpos[0][p2]-5,top+ Xpos[1][p2],0);
 	    }
 	    else
 	    {
@@ -122,23 +123,22 @@ void graphic(int *gd, int *gm,conj * A,conj * B)
 	    }
 		
 	}
-
         cont=getch();
         closegraph();
     } while(cont == 'y');
     //printf("DETECT: 0x%x\n",&gd);
 }
 
-void triangle(int xalpha, int yalpha)
+void triangle(int xalpha, int yalpha,int mode)
 {
     int i,j=0;
     moveto(xalpha-=5,yalpha+=2);
     for(i=0;i<5;i++)
     {
     	moveto(xalpha+0,yalpha+0);
-    	linerel(i,i/0.577); //Para ángulo de 30º se divide entre 0.577 la pendiente.
-    	linerel(i,-i/0.577);
-    	linerel(-i*2,0);
+    	linerel(i/0.577,i); //Para ángulo de 30º se divide entre 0.577 la pendiente.
+    	linerel(-i/0.577,i);
+    	linerel(0,-i*2);
     }
 }
 //////////////////Un intento de itoa//////////////////////////
