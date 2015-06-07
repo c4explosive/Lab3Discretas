@@ -1,24 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include <conio.h>
 #include <graphics.h>
 #include <string.h>
 #include <math.h>
 #define sst "H:\\BGI"
-#define TAM 100
+#define TAM 20 //Se puede optimizar, TODO: cambiar por tamaño no fijo (REAL).
 typedef struct cj {
     int * X;
     int * Xc;
-} conj;  
+} conj;
+////////////F(x) Principales/////////  
 void graphic(int *, int *,conj * A);
-char * intostr(int);
 void printj(conj * Y);
 conj * cconj(conj * Z);
-void pcar(conj * Y,conj * Z);
 int ** nrel(conj *,conj *);
 void matrel();
+void pcar(conj * Y,conj * Z);
+//////////F(x) Auxiliares/////////////////
+char * intostr(int);
 void triangle(int, int);
 conj * iconj();
+/////////////////////////////////////////
 void main()
 {
     int gd = DETECT,gm,i;
@@ -34,7 +36,7 @@ void main()
     getch();
     graphic(&gd,&gm,A);
 }
-
+////////////////////////////GRAPHIC MODE////////////////////////////////////////
 void graphic(int *gd, int *gm,conj * A)
 {
     int left=100,top=100,right=200,bottom=200,x= 300,y=150,radius=50;
@@ -72,6 +74,7 @@ void graphic(int *gd, int *gm,conj * A)
     } while(cont == 'y');
     //printf("DETECT: 0x%x\n",&gd);
 }
+
 void triangle(int xalpha, int yalpha)
 {
     int i,j=0;
@@ -79,18 +82,19 @@ void triangle(int xalpha, int yalpha)
     for(i=0;i<5;i++)
     {
     	moveto(xalpha+0,yalpha+0);
-    	linerel(i,i/0.577);
+    	linerel(i,i/0.577); //Para ángulo de 30º se divide entre 0.577
     	linerel(i,-i/0.577);
     	linerel(-i*2,0);
     }
 }
+//////////////////Un intento de itoa//////////////////////////
 char * intostr(int x)
 {
     char * buffer=malloc(sizeof(char));
     sprintf(buffer,"%d",x);
     return buffer;
 }
-
+///////////////////Imprimir Conjuntos//////////////////////////////
 void printj(conj * Y)
 {
     int i; int vac=1;
@@ -108,12 +112,14 @@ void printj(conj * Y)
     else
     	printf("\b}\n");
 }
+/////////////////////Producto Cartesiano//////////////////////////////////
 void pcar(conj * Y,conj * Z)
 {
     int i, j;
     printf("{");
     for(i=0;i<TAM;i++)
     {
+	//printf("DEBUG: (%d) -> POS: %d\n",Y->X[i],i);
 	if(Y->Xc[i])
 	{
 	    //printf("%d\n",Y->X[i]);
@@ -129,17 +135,13 @@ void pcar(conj * Y,conj * Z)
     printf("\b}\n");
         
 }
+/////////////////////////Condición para Relación//////////////////////////
 int ** nrel(conj *Y,conj *Z)
 {
     int i,j,k=0;
     int **pares=malloc(sizeof(int*));
     for(k=0;k<2;k++)
 	pares[k]=malloc(49*sizeof(int));
-    for(k=0;k<49;k++)
-    {
-    	pares[0][k]=0;
-	pares[1][k]=1;
-    }
     for(i=0;i<2;i++)
     {
 	for(j=0;j<k;j++)
@@ -150,6 +152,7 @@ int ** nrel(conj *Y,conj *Z)
     }
 
 }
+///////////////////////////////Cargar Conjunto/////////////////////////////
 conj * cconj(conj * Z)
 {
     int i;
@@ -167,6 +170,7 @@ conj * cconj(conj * Z)
     }
     return Z;
 }
+//////////////////////////////Crear Conjuntos////////////////////////////////
 conj * iconj()
 {
     conj * ccj=malloc(sizeof(conj));
@@ -174,4 +178,4 @@ conj * iconj()
     ccj->Xc=malloc(TAM*sizeof(int));
     return ccj;
 }
-
+/////////////////////////////////////////////////////////////////////////////
