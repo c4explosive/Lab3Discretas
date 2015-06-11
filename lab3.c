@@ -44,8 +44,8 @@ void graphic(int *gd, int *gm,conj * A,conj * B)
 {
     int left=100,top=100,right=200,bottom=200,x= 300,y=150,radius=50;
     int i,j,k=0,l=0,p1,p2;
-    int Xpos[2][7]={{23,45,135,90,178,152,255},
-		    {45,140,97,38,17,142,105}};
+    int Xpos[2][8]={{3,45,135,90,178,152,255,300},
+		    {45,140,97,38,17,142,105,200}};
     int** Pos=malloc(sizeof(int*));
     for(i=0;i<2;i++)
 	Pos[i]=malloc(7*sizeof(int));
@@ -54,12 +54,13 @@ void graphic(int *gd, int *gm,conj * A,conj * B)
     {
 	if(A->Xc[k])
 	{
-    	    Pos[0][l]=A->X[k];
+    	    Pos[0][l]=k;
 	    Pos[1][l]=l;
 	    l++;
 	}
     }
-    //pbiarray(Pos,l);
+    /*pbiarray(rel,rel[0][0]);
+    pbiarray(Pos,l);*/
     char cont='y';
     k=0;
     do
@@ -77,9 +78,9 @@ void graphic(int *gd, int *gm,conj * A,conj * B)
 	}
 	l=k=0;
 	l++;
-	for (i=1;i<rel[0][0]-1;i++)
+	for (i=1;i<rel[0][0];i++)
 	{
-	    for (j=0;j<7;j++)
+	    for (j=0;j<8;j++)
 	    {
 	    	if( rel[0][i] == Pos[0][j])
 		{
@@ -207,8 +208,9 @@ int ** nrel(conj *Y,conj *Z,int s)
 	    {
 		if(Z->Xc[j])
 		{
-		    if((Y->X[i]*Z->X[j])<(pow(Y->X[i],2)))
-		    //if(Y->X[i]%Z->X[j]==0)
+		    //if((Y->X[i]*Z->X[j])<(pow(Y->X[i],2)))
+		    if(Y->X[i]%Z->X[j]==0)
+		    //if(Y->X[i]==Z->X[j]-2)
 		    {
 			if(s)
 			    printf("(%d,%d),",Y->X[i],Z->X[j]); //TODO: ¿puede ser independiente o depende del producto cartesiano?
@@ -223,18 +225,19 @@ int ** nrel(conj *Y,conj *Z,int s)
     if(s)
     	printf("\b}\n");
     k++;
+    k--;
     pares[0][0]=k;
     pares[1][0]=k;
     k--;
-    pares[0][k]=1000;
-    pares[1][k]=1000;
-    //pbiarray(pares,pares[0][0]);
+    //pares[0][k]=1000;
+    //pares[1][k]=1000;
     return pares;
 }
 
 void pbiarray(int ** biarray, int k)
 {
     int j,i;
+    printf("ARRAY: \n");
     for(i=0;i<2;i++)
     {
 	for(j=0;j<k;j++)
@@ -245,19 +248,20 @@ void pbiarray(int ** biarray, int k)
     }
 }
 ///////////////////////////////Cargar Conjunto/////////////////////////////
-conj * cconj(conj * Z)
+conj * cconj(conj * Z) //¿Se puede cargar directamente?
 {
-    int i;
-    for (i=0;i<TAM;i++)
+    int i=0,k=1;
+    for (k=0;k<TAM;k++)
     {
-	if (i == 16)
+	if (k == 16)
 	    break;
-	if (i == 0)
+	if (k == 0)
 	    continue;
-	if(i%2==0)
+	if(k%2==0)
 	{
-	    Z->X[i]=i;
+	    Z->X[i]=k;
 	    Z->Xc[i]=1;
+	    i++;
 	}
     }
     return Z;
