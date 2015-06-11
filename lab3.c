@@ -15,7 +15,7 @@ void graphic(int *, int *,conj *,conj *);
 void printj(conj * Y);
 conj * cconj(conj * Z);
 int ** nrel(conj *,conj *,int);
-void matrel();
+void matrel(conj *A, conj *B,int ** rel);
 void pcar(conj * Y,conj * Z);
 void menu();
 //////////F(x) Auxiliares/////////////////
@@ -35,21 +35,22 @@ void main()
     printf("A=");printj(A);
     printf("B=");printj(B);
     pcar(A,B);
-    //nrel(A,B,1);
+    nrel(A,B,1);
     getch();
     graphic(&gd,&gm,A,B);
 }
 ////////////////////////////GRAPHIC MODE////////////////////////////////////////
 void graphic(int *gd, int *gm,conj * A,conj * B)
 {
-    int left=100,top=100,right=200,bottom=200,x= 300,y=150,radius=50;
+    int left=100,top=100,right=200,bottom=200;
+    //x= 300,y=150,radius=50;
     int i,j,k=0,l=0,p1,p2;
     int Xpos[2][8]={{3,45,135,90,178,152,255,300},
 		    {45,140,97,38,17,142,105,200}};
     int** Pos=malloc(sizeof(int*));
     for(i=0;i<2;i++)
 	Pos[i]=malloc(7*sizeof(int));
-    int ** rel=nrel(A,B,1);
+    int ** rel=nrel(A,B,0);
     for(k=0;k<TAM;k++)
     {
 	if(A->Xc[k])
@@ -59,8 +60,8 @@ void graphic(int *gd, int *gm,conj * A,conj * B)
 	    l++;
 	}
     }
-    /*pbiarray(rel,rel[0][0]);
-    pbiarray(Pos,l);*/
+    //pbiarray(rel,rel[0][0]);
+    //pbiarray(Pos,l);
     char cont='y';
     k=0;
     do
@@ -92,7 +93,7 @@ void graphic(int *gd, int *gm,conj * A,conj * B)
 		}
 
 	    }
-	    //printf("n: %d->%d\n",Xpos[0][p1],Xpos[0][p2]);
+	    printf("n: %d->%d\n",Xpos[0][p1],Xpos[0][p2]);
 	    if (!(rel[0][i]==rel[1][i]))
 	    {
     		setcolor(l);
@@ -224,8 +225,8 @@ int ** nrel(conj *Y,conj *Z,int s)
     }
     if(s)
     	printf("\b}\n");
-    k++;
-    k--;
+    /*k++;
+    k--;*/
     pares[0][0]=k;
     pares[1][0]=k;
     k--;
