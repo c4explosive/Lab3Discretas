@@ -16,14 +16,13 @@ void graphic(int *, int *,conj *,conj *);
 void printj(conj * Y);
 conj * cconj(conj * Z);
 int ** nrel(conj *,conj *,int);
-void matrel(conj * Y, int ** rel);
+void matrel();
 void pcar(conj * Y,conj * Z);
 void presentacion();
 //////////F(x) Auxiliares/////////////////
 char * intostr(int);
 void triangle(int, int, int);
 void pbiarray(int **, int k);
-void piarray(int **, int k,int);
 conj * iconj();
 /////////////////////////////////////////
 void main()
@@ -31,63 +30,51 @@ void main()
     int gd = DETECT,gm,i, ch, cch;
     conj* A=iconj();
     conj* B=iconj();
-    A=cconj(A);
-    B=A;
+A=cconj(A);
+		B=A;
     clrscr();
     do
     {
-	clrscr();
-    	printf("1. Presentacion\n");
-    	printf("2. Los elementos del conjunto A o B\n");
-    	printf("3. El producto cartesiano\n");
-    	printf("4. El conjunto relación (R)\n");
-    	printf("5. La matriz de adyacencia de la relación\n");
-    	printf("6. El dígrafo de la relación\n");
-    	printf("7. Salir\n");
-    	printf("Eliga una de las opciones presentadas.\n");
-    	scanf("%d", &ch);
-    	switch(ch)
-    	{
-	    case 1: clrscr();
-		    presentacion();
-		    getch();
-		    break;
-	    case 2: clrscr();
-		    printf("Que conjunto desea imprimir?\n1. A\n2. B\n");
-		    scanf("%d", &cch);
-		    if(cch==1){
-			printf("A="); clrscr(); printj(A); getch();
-		    } else if(cch==2){
-			printf("B="); clrscr(); printj(B); getch();
-		    }
-		    break;
-	     case 3: clrscr();
-		     printf("Producto Cartesiano\n");
-		     pcar(A,B);
-		     getch();
-		     break;
-	     case 4: clrscr();
-		     printf("Conjunto de Relación\n");
-		     nrel(A,B,1);
-		     getch();
-		     break;
-	     case 5: clrscr();
-    		     printf("Matriz Relación: \n");
-		     matrel(A, nrel(A,B,0));
-		     getch();
-		     break;
-	     case 6: clrscr();
-		     graphic(&gd,&gm,A,B);
-		     getch();
-		     break;
-	     case 7: clrscr();
-		     printf("Gracias!\n");
-		     getch();
-		     break;
-	     default: printf("Elija de las opciones predeterminadas.\n");
-        }
-    } while (ch!=7);
+    printf("1. Presentacion\n");
+    printf("2. Los elementos del conjunto A o B\n");
+    printf("3. El producto cartesiano\n");
+    printf("4. El conjunto relación (R)\n");
+    printf("5. La matriz de adyacencia de la relación\n");
+    printf("6. El dígrafo de la relación\n");
+    printf("7. Salir\n");
+    printf("Eliga una de las opciones presentadas.\n");
+    scanf("%d", &ch);
+    switch(ch)
+    {
+	case 1: presentacion();
+		break;
+	case 2: 
+		printf("Que conjunto desea imprimir?\n1. A\n2. B\n");
+		scanf("%d", &cch);
+		if(cch==1){
+			printf("A=");printj(A);
+		} else if(cch==2){
+			printf("B=");printj(B);
+		}
+		break;
+	case 3: printf("Producto Cartesiano\n");
+		pcar(A,B);
+		break;
+	case 4: printf("Conjunto de Relación\n");
+		nrel(A,B,1);
+		break;
+	case 5: printf("Matriz relacion\n");
+		matrel(A, B);
+		break;
+	case 6: graphic(&gd,&gm,A,B);
+		break;
+	case 7: printf("Gracias!");
+		break;
+	default: printf("Eliga de las opciones predeterminadas.\n");
+    }
+    }while (ch!=7);
     //printf("N: %d\n",A->X[0]);
+    getch();
 }
 ////////////////////////////GRAPHIC MODE////////////////////////////////////////
 void graphic(int *gd, int *gm,conj * A,conj * B)
@@ -259,8 +246,8 @@ int ** nrel(conj *Y,conj *Z,int s)
 	    {
 		if(Z->Xc[j])
 		{
-		    if((Y->X[i]*Z->X[j])<(pow(Y->X[i],2)))
-		    //if(Y->X[i]%Z->X[j]==0)
+		    //if((Y->X[i]*Z->X[j])<(pow(Y->X[i],2)))
+		    if(Y->X[i]%Z->X[j]==0)
 		    //if(Y->X[i]==Z->X[j]-2)
 		    {
 			if(s)
@@ -285,23 +272,6 @@ int ** nrel(conj *Y,conj *Z,int s)
     return pares;
 }
 
-void piarray(int ** biarray, int k,int l)
-{
-    int j,i;
-    for(i=0;i<k;i++)
-    {
-	for(j=0;j<l;j++)
-	{
-	    if(i==0 && j==0)
-		printf("   ");
-	    else
-	    	printf("%3d",biarray[i][j]);
-	}
-	printf("\n");
-	if(i==0)
-	    printf("\n");
-    }
-}
 void pbiarray(int ** biarray, int k)
 {
     int j,i;
@@ -342,40 +312,33 @@ conj * iconj()
     ccj->Xc=malloc(TAM*sizeof(int));
     return ccj;
 }
-
-void matrel(conj * Y, int ** rel)
+/////////////////////////////////////////////////////////////////////////////
+void matrel()
 {
-    int i, j=0,k=0, px=0, py=0;
-    int ** mtrel=malloc(8*sizeof(int *));
-    for(i=0;i<8;i++)
-	mtrel[i]=malloc(8*sizeof(int));
-    for(i=1;i<8;i++)
-    {
-	if(Y->Xc[i-1])
-	    mtrel[0][i]=Y->X[i-1];
-	if(Y->Xc[i-1])
-	    mtrel[i][0]=Y->X[i-1];
-    }	
-    for(i=1;i<rel[0][0];i++)
-    {
-	px=rel[0][i]+1;
-	py=rel[1][i]+1;
-	mtrel[px][py]=1;
-    }
-    piarray(mtrel,8,8);
-    //pbiarray(rel,rel[0][0]);
-}
+	int i, j, a=0, b=0;
+	int mat[8][8]={{0,2,4,6,8,10,12,14},{2,1,0,0,0,0,0,0},{4,1,1,0,0,0,0,0},{6,1,0,1,0,0,0,0}
+			,{8,1,1,0,1,0,0,0},{10,1,0,0,0,1,0,0},{12,1,1,1,0,0,1,1},{14,1,0,0,0,0,0,1}};
 
+
+for(i=0; i<8; i++)
+  {
+      for(j=0; j<8; j++)
+      {
+	 printf("%4d", mat[i][j]);
+      }
+      printf("\n");
+  }
+  }
 /////////////////////////////////////////////////////////////////////////////
 void presentacion ()
 {
-    printf("\t\t\tUNIVERSIDAD TECNOLOGICA DE PANAMÁ\n");
+    printf("\t\t\tUNIVERSIDAD TECNOLOGICA DE PANAMA\n");
     printf("\t\tFACULTAD DE INGENIERÍA DE SISTEMAS COMPUTACIONALES\n");
       printf("\t\tDEPARTAMENTO DE COMPUTACIÓN Y SIMULACIÓN DE SISTEMAS\n\n");
     printf("\t\t\t\t  LABORATORIO N_3\n");
 	  printf("\t\t\t\tRELACIONES Y DIGRAFO\n\n");
-    printf("\t\t\t\tMaria T. Rodríguez 8-900-1207\n");
-      printf("\t\t\t\t Angel Espinosa 8-905-1352\n\n");
+    printf("\t\t\t\tMaria T. Rodriguez\n");
+      printf("\t\t\t\t Angel Espinosa\n\n");
     printf("\t\t\tPROFESORA: Ing. Jacqueline S. de Ching\n\n");
       printf("\t\t\t\t GRUPO: 1-IL-121\n\n");
     printf("\t\t\t\t       2015\n");
