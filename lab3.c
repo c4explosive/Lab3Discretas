@@ -5,7 +5,7 @@
 #include <math.h>
 #define sst "H:\\BGI"
 #define clrscr() system("clear")
-#define TAM 20 //Se puede optimizar, TODO: cambiar por tamaño no fijo (REAL).
+#define TAM 20 
 typedef struct cj
 {
     int * X;
